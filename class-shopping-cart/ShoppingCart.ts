@@ -22,6 +22,10 @@ class ShoppingCart {
   }
 
   public removeItem(itemId: string): void {
+    const existItem = this.items.findIndex(i => i.id === itemId);
+    if (existItem === -1) {
+      throw new Error(`Item id ${itemId} doesn't exist`);
+    }
     this.items = this.items.filter(item => item.id !== itemId);
   }
 
@@ -58,9 +62,15 @@ class ShoppingCart {
 // Usage example
 const cart = new ShoppingCart();
 
-cart.addItem({ id: '1', name: 'Laptop', price: 999.99, quantity: 1 });
-cart.addItem({ id: '2', name: 'T-Shirt', price: 19.99, quantity: 2 });
+// Bug: Output node `ShoppingCart.js` is `Subtotal: $NaN, Tax: $NaN, Total: $NaN` 
+// Because addItem function receive 2 arguments, And 2nd argument doesn't object!!!
+// cart.addItem({ id: '1', name: 'Laptop', price: 999.99, quantity: 1 });
+// cart.addItem({ id: '2', name: 'T-Shirt', price: 19.99, quantity: 2 });
+// Debug is Here...
+cart.addItem({ id: '1', name: 'Laptop', price: 999.99}, 1 );
+console.log(cart.getCartSummary());
 
+cart.addItem({ id: '2', name: 'T-Shirt', price: 19.99}, 2 );
 console.log(cart.getCartSummary());
 
 cart.applyDiscount(10); // Apply 10% discount
