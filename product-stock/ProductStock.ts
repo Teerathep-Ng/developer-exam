@@ -22,10 +22,18 @@ class InventoryManager {
 
   public addProduct(product: Product): void {
     // Bug: ไม่ตรวจสอบว่าสินค้าซ้ำกันหรือไม่
+    const existProduct = this.products.find(p => p.id === product.id && p.name === product.name);
+    if (existProduct) {
+      throw new Error(`Product with ID ${product.id} or Name ${product.name} already exist`);
+    }
     this.products.push(product);
   }
 
   public updateStock(productId: string, newQuantity: number): void {
+    // Debug: Add condition of newQuantity is integer more than zero
+    if (!Number.isInteger(newQuantity) || newQuantity <= 0) {
+      throw new Error(`Quantity must be Positive Interger`)
+    }
     const productIndex = this.products.findIndex(p => p.id === productId);
     if (productIndex !== -1) {
       // Bug: ไม่ตรวจสอบว่า newQuantity เป็นจำนวนเต็มบวกหรือไม่
@@ -36,11 +44,13 @@ class InventoryManager {
   public calculateRevenue(soldQuantity: number, productId: string): number {
     const product = this.getProductById(productId);
     if (!product) return 0;
-
+    // Debug check soldQuantity and stockQuantity
+    if (product && soldQuantity > product.stockQuantity) {
+      throw new Error(`Cannot sell ${soldQuantity} items. Only ${product.stockQuantity} items`);
+    }
     const discountedPrice = product.sellingPrice * (1 - this.getDiscount(product.category));
     const taxAmount = discountedPrice * soldQuantity * this.taxRate;
     const revenue = discountedPrice * soldQuantity + taxAmount;
-
     // Bug: ไม่ตรวจสอบว่า soldQuantity เกิน stockQuantity หรือไม่
     return revenue;
   }
@@ -52,9 +62,12 @@ class InventoryManager {
     const discountedPrice = product.sellingPrice * (1 - this.getDiscount(product.category));
     const cost = product.costPrice * soldQuantity;
     const profit = discountedPrice * soldQuantity - cost;
-
+    // Debug: Calculate tax and netProfit
+    const tax = profit * this.taxRate;
+    const netProfit = profit - tax;
+    return netProfit;
     // Bug: ไม่คำนวณภาษีในการคำนวณกำไร
-    return profit;
+    // return profit;
   }
 
   private getProductById(id: string): Product | undefined {
@@ -66,6 +79,10 @@ class InventoryManager {
   }
 
   public restock(productId: string, additionalQuantity: number): void {
+    // Debug: Add condition of additionalQuantity is integer more than zero
+    if (!Number.isInteger(additionalQuantity) || additionalQuantity <= 0) {
+      throw new Error(`additionalQuantity must be Positive Interger`)
+    }
     const productIndex = this.products.findIndex(p => p.id === productId);
     if (productIndex !== -1) {
       // Bug: ไม่ตรวจสอบว่า additionalQuantity เป็นจำนวนเต็มบวกหรือไม่
