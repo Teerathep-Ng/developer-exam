@@ -22,7 +22,7 @@ class InventoryManager {
 
   public addProduct(product: Product): void {
     // Bug: ไม่ตรวจสอบว่าสินค้าซ้ำกันหรือไม่
-    const existProduct = this.products.find(p => p.id === product.id && p.name === product.name);
+    const existProduct = this.products.find(p => p.id === product.id || p.name === product.name);
     if (existProduct) {
       throw new Error(`Product with ID ${product.id} or Name ${product.name} already exist`);
     }
