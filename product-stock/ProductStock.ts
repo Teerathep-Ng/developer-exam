@@ -22,9 +22,9 @@ class InventoryManager {
 
   public addProduct(product: Product): void {
     // Bug: ไม่ตรวจสอบว่าสินค้าซ้ำกันหรือไม่
-    const existProduct = this.products.find(p => p.id === product.id || p.name === product.name);
+    const existProduct = this.products.find(p => p.id === product.id);
     if (existProduct) {
-      throw new Error(`Product with ID ${product.id} or Name ${product.name} already exist`);
+      throw new Error(`Product with ID ${product.id} already exist`);
     }
     this.products.push(product);
   }
@@ -32,7 +32,7 @@ class InventoryManager {
   public updateStock(productId: string, newQuantity: number): void {
     // Debug: Add condition of newQuantity is integer more than zero
     if (!Number.isInteger(newQuantity) || newQuantity <= 0) {
-      throw new Error(`Quantity must be Positive Interger`)
+      throw new Error(`Quantity must be positive Interger`)
     }
     const productIndex = this.products.findIndex(p => p.id === productId);
     if (productIndex !== -1) {
@@ -45,7 +45,7 @@ class InventoryManager {
     const product = this.getProductById(productId);
     if (!product) return 0;
     // Debug check soldQuantity and stockQuantity
-    if (product && soldQuantity > product.stockQuantity) {
+    if (soldQuantity > product.stockQuantity) {
       throw new Error(`Cannot sell ${soldQuantity} items. Only ${product.stockQuantity} items`);
     }
     const discountedPrice = product.sellingPrice * (1 - this.getDiscount(product.category));
