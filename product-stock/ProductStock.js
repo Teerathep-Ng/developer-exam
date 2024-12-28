@@ -1,9 +1,3 @@
-// Test ProductStock.ts file
-// This page from `npm install -g typescript`
-// Check `tsc -v`
-// Run using node ProductStock.js
-// ************************ DON'T FORGET COMMENT OUT BELOW BEFORE RUN THIS FILE ************************ 
-
 // var InventoryManager = /** @class */ (function () {
 //     function InventoryManager(initialProducts) {
 //         this.products = [];
@@ -17,16 +11,16 @@
 //     }
 //     InventoryManager.prototype.addProduct = function (product) {
 //         // Bug: ไม่ตรวจสอบว่าสินค้าซ้ำกันหรือไม่
-//         var existProduct = this.products.find(function (p) { return p.id === product.id || p.name === product.name; });
+//         var existProduct = this.products.find(function (p) { return p.id === product.id; });
 //         if (existProduct) {
-//             throw new Error("Product with ID ".concat(product.id, " or Name ").concat(product.name, " already exist"));
+//             throw new Error("Product with ID ".concat(product.id, " already exist"));
 //         }
 //         this.products.push(product);
 //     };
 //     InventoryManager.prototype.updateStock = function (productId, newQuantity) {
 //         // Debug: Add condition of newQuantity is integer more than zero
 //         if (!Number.isInteger(newQuantity) || newQuantity <= 0) {
-//             throw new Error("Quantity must be Positive Interger");
+//             throw new Error("Quantity must be positive Interger");
 //         }
 //         var productIndex = this.products.findIndex(function (p) { return p.id === productId; });
 //         if (productIndex !== -1) {
@@ -39,7 +33,7 @@
 //         if (!product)
 //             return 0;
 //         // Debug check soldQuantity and stockQuantity
-//         if (product && soldQuantity > product.stockQuantity) {
+//         if (soldQuantity > product.stockQuantity) {
 //             throw new Error("Cannot sell ".concat(soldQuantity, " items. Only ").concat(product.stockQuantity, " items"));
 //         }
 //         var discountedPrice = product.sellingPrice * (1 - this.getDiscount(product.category));
@@ -89,19 +83,10 @@
 //     { id: 'P001', name: 'Laptop', costPrice: 800, sellingPrice: 1200, stockQuantity: 50, category: 'A' },
 //     { id: 'P002', name: 'Smartphone', costPrice: 300, sellingPrice: 600, stockQuantity: 100, category: 'B' },
 // ]);
-
 // inventory.addProduct({ id: 'P003', name: 'Tablet', costPrice: 250, sellingPrice: 400, stockQuantity: 75, category: 'C' });
-
 // console.log(inventory.calculateRevenue(5, 'P001'));
 // console.log(inventory.calculateProfit(5, 'P001'));
-
 // inventory.updateStock('P001', 40);
 // console.log(inventory.getLowStockProducts(50));
-
 // inventory.restock('P002', 20);
-// console.log(inventory.getLowStockProducts(80));
-
-// inventory.restock('P002', 20);
-// console.log(inventory.getLowStockProducts(140));
-
-// inventory.addProduct({ id: 'P003', name: 'b', costPrice: 250, sellingPrice: 400, stockQuantity: 75, category: 'C' });
+// console.log(inventory.getLowStockProducts(50));
